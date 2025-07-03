@@ -12,7 +12,20 @@ BUILDDIR      = _build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
+.PHONY: help Makefile install setup clean-venv
+
+# Install dependencies using uv
+install:
+	uv pip install -r requirements.txt
+
+# Setup virtual environment and install dependencies
+setup:
+	uv venv
+	uv pip install -r requirements.txt
+
+# Clean virtual environment
+clean-venv:
+	rm -rf .venv
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
