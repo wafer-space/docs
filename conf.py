@@ -76,7 +76,7 @@ language = "en"
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".venv", "temp-wafer-space-jekyll-theme"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
@@ -99,11 +99,6 @@ html_theme_path = ["_themes"]
 
 html_theme_options = {
     "announcement": "<strong>⚠️ WARNING:</strong> This site is under heavy development. Content has not been reviewed for accuracy and information is currently likely to be wrong. Use at your own risk.",
-    "primary_color": "#58b39a",
-    "secondary_color": "#606060",
-    "background_color": "#f9fafb",
-    "text_color": "#606060",
-    "link_color": "#58b39a",
 }
 html_title = project
 
