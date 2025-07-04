@@ -90,13 +90,21 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "furo"
+html_theme = "wafer_space"
+html_theme_path = ["_themes"]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-html_theme_options = {}
+html_theme_options = {
+    "announcement": "<strong>⚠️ WARNING:</strong> This site is under heavy development. Content has not been reviewed for accuracy and information is currently likely to be wrong. Use at your own risk.",
+    "primary_color": "#58b39a",
+    "secondary_color": "#606060",
+    "background_color": "#f9fafb",
+    "text_color": "#606060",
+    "link_color": "#58b39a",
+}
 html_title = project
 
 # Add any paths that contain custom static files (such as style sheets) here,
