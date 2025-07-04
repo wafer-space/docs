@@ -68,3 +68,11 @@ make clean-venv
 - The build process uses `git describe --tags --always` to determine version numbers
 - All Markdown files support MyST syntax including directives and roles
 - The project name "wafer.space End User Documentation" is used throughout the build
+
+## Git Workflow
+
+### Branch Management
+- When making changes, start a new git branch and then make sure to commit to the git repository frequently as you work
+- Once the work has been completed ask the user if you should merge the created branch into the main branch
+- Don't delete the branches after merging
+- When merging the branches to main, make sure to not fast forward
