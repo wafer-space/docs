@@ -5,4 +5,6 @@
 maxdepth: 3
 ---
 useful-resources
+packaging/index
+community/index
 ```
