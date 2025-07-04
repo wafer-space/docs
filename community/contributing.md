@@ -131,7 +131,22 @@ your code here
 
 ### Images
 
-![Alt text for accessibility](images/your-image.png)
+When including images, organize them in a folder with the same name as your document:
+
+```
+community/
+├── your-contribution/
+│   ├── your-contribution.md
+│   └── images/
+│       ├── diagram1.png
+│       └── screenshot.png
+```
+
+Then reference them in your markdown:
+
+```markdown
+![Descriptive alt text](images/diagram1.png)
+```
 
 ## Results/Outcomes
 

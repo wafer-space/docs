@@ -90,6 +90,26 @@ chip-on-board
 using-bare-die/index
 ```
 
+## Glossary
+
+**Bare Die** - Unpackaged semiconductor chip, as delivered by wafer.space
+
+**COB (Chip-on-Board)** - Assembly method where bare die are mounted directly on PCB
+
+**Die Attach** - Process of mechanically and electrically connecting die to substrate
+
+**Encapsulation** - Protective coating or housing applied over assembled components
+
+**GF180MCU** - GlobalFoundries 180nm mixed-signal/RF CMOS process technology
+
+**Glob-Top** - Protective epoxy coating applied over wire-bonded assemblies
+
+**KGD (Known Good Die)** - Die that have been tested and verified functional
+
+**PDK (Process Design Kit)** - Design files and documentation for semiconductor process
+
+**Wire Bonding** - Method of connecting die pads to substrate using fine wires
+
 ## Need Help?
 
 - Check the [community documentation](../community/index) for user experiences

@@ -217,12 +217,14 @@ Key insights from Mehdi's OpenFASoC work:
 
 ### Volume Considerations
 
-| Volume Range | Assembly Approach | Cost per Unit | Setup Cost |
-|--------------|------------------|---------------|------------|
-| 1-100 | Manual assembly | High | Low |
-| 100-1,000 | Semi-automated | Medium | Medium |
-| 1,000-10,000 | Automated line | Low | High |
-| >10,000 | Optimized production | Lowest | Highest |
+| Volume Range | Assembly Approach | Cost per Unit* | Setup Cost | Timeline |
+|--------------|------------------|----------------|------------|----------|
+| 1-100 | Manual assembly | $25-50 | $500-2K | 1-2 weeks |
+| 100-1,000 | Semi-automated | $8-15 | $5K-20K | 2-4 weeks |
+| 1,000-10,000 | Automated line | $3-8 | $50K-200K | 4-8 weeks |
+| >10,000 | Optimized production | $1-3 | $200K+ | 8-16 weeks |
+
+*Costs are approximate and include die attach, wire bonding, and encapsulation. Actual costs vary based on die size, pin count, and complexity.
 
 ## Getting Started with COB
 
