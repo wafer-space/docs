@@ -27,7 +27,7 @@ When this PR is created, the GitHub Action should:
 
 1. ✅ Wait for ReadTheDocs preview to deploy
 2. ✅ Run muffet link checker on the preview
-3. ✅ Find all links are valid
+3. ✅ Find all links are valid (after fixes applied)
 4. ✅ Post a success comment on the PR
 5. ✅ Pass the status check
 
