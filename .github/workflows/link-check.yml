@@ -1,0 +1,228 @@
+name: Link Check on ReadTheDocs Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  wait-for-readthedocs:
+    name: Wait for ReadTheDocs Preview and Check Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get PR number
+        id: pr
+        run: echo "number=${{ github.event.number }}" >> $GITHUB_OUTPUT
+
+      - name: Wait for ReadTheDocs build to complete
+        id: wait-rtd
+        run: |
+          PR_NUMBER="${{ steps.pr.outputs.number }}"
+          PROJECT_SLUG="wafer-space"
+          PREVIEW_URL="https://wafer-space--${PR_NUMBER}.org.readthedocs.build/en/${PR_NUMBER}/"
+          
+          echo "Waiting for ReadTheDocs preview at: $PREVIEW_URL"
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          
+          # Function to check if URL returns 200
+          check_url() {
+            local url=$1
+            local status_code=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "000")
+            echo "$status_code"
+          }
+          
+          # Wait up to 10 minutes for the preview to be available
+          MAX_ATTEMPTS=60
+          SLEEP_INTERVAL=10
+          ATTEMPT=1
+          
+          echo "Checking ReadTheDocs preview availability..."
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            STATUS_CODE=$(check_url "$PREVIEW_URL")
+            
+            if [ "$STATUS_CODE" = "200" ]; then
+              echo "✅ ReadTheDocs preview is available!"
+              echo "Preview URL: $PREVIEW_URL"
+              exit 0
+            else
+              echo "⏳ Attempt $ATTEMPT/$MAX_ATTEMPTS: Preview not ready (HTTP $STATUS_CODE)"
+              if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+                echo "❌ ReadTheDocs preview did not become available within timeout"
+                echo "Final status code: $STATUS_CODE"
+                exit 1
+              fi
+              sleep $SLEEP_INTERVAL
+              ATTEMPT=$((ATTEMPT + 1))
+            fi
+          done
+
+      - name: Install muffet
+        run: |
+          # Install muffet link checker
+          wget -q https://github.com/raviqqe/muffet/releases/latest/download/muffet_linux_amd64.tar.gz
+          tar -xzf muffet_linux_amd64.tar.gz
+          sudo mv muffet /usr/local/bin/
+          muffet --version
+
+      - name: Run link checker with muffet
+        id: link-check
+        run: |
+          PREVIEW_URL="${{ steps.wait-rtd.outputs.preview_url }}"
+          
+          echo "🔍 Running link checker on: $PREVIEW_URL"
+          
+          # Create results directory
+          mkdir -p link-check-results
+          
+          # Run muffet with comprehensive options
+          set +e  # Don't exit on muffet errors, we want to capture them
+          
+          muffet \
+            --verbose \
+            --buffer-size=8192 \
+            --max-connections=10 \
+            --max-connections-per-host=2 \
+            --rate-limit=5 \
+            --timeout=60 \
+            --ignore-fragments \
+            --skip-tls-verification \
+            --max-redirections=10 \
+            --color=never \
+            --header="Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" \
+            --header="Accept-Language: en-US,en;q=0.5" \
+            --header="Accept-Encoding: gzip, deflate" \
+            --header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
+            --exclude=".*linkedin\.com.*" \
+            --exclude=".*twitter\.com.*" \
+            --exclude=".*x\.com.*" \
+            --exclude=".*facebook\.com.*" \
+            --exclude=".*discord\.gg.*" \
+            --exclude=".*ieeexplore\.ieee\.org.*" \
+            --exclude=".*reddit\.com.*" \
+            --exclude=".*sourceforge\.io.*" \
+            --exclude=".*sourceforge\.net.*" \
+            --exclude=".*platform\.efabless\.com.*" \
+            --exclude=".*invite\.skywater\.tools.*" \
+            --exclude=".*allaboutcircuits\.com.*" \
+            --exclude=".*globalfoundries\.com.*" \
+            --exclude=".*klayout\.de.*" \
+            "$PREVIEW_URL" \
+            > link-check-results/muffet-output.txt 2>&1
+          
+          MUFFET_EXIT_CODE=$?
+          
+          echo "exit_code=$MUFFET_EXIT_CODE" >> $GITHUB_OUTPUT
+          
+          # Display results
+          echo "📊 Link Check Results:"
+          echo "Exit code: $MUFFET_EXIT_CODE"
+          echo ""
+          
+          if [ $MUFFET_EXIT_CODE -eq 0 ]; then
+            echo "✅ All links are valid!"
+          else
+            echo "❌ Some links failed validation"
+            echo ""
+            echo "Detailed output:"
+            cat link-check-results/muffet-output.txt
+          fi
+
+      - name: Upload link check results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: link-check-results
+          path: link-check-results/
+          retention-days: 30
+
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            const path = './link-check-results/muffet-output.txt';
+            const exitCode = '${{ steps.link-check.outputs.exit_code }}';
+            const previewUrl = '${{ steps.wait-rtd.outputs.preview_url }}';
+            
+            let output = '';
+            if (fs.existsSync(path)) {
+              output = fs.readFileSync(path, 'utf8');
+            }
+            
+            const success = exitCode === '0';
+            const status = success ? '✅ PASSED' : '❌ FAILED';
+            const emoji = success ? '🎉' : '🔍';
+            
+            let comment = `## ${emoji} Link Check Results - ${status}\n\n`;
+            comment += `**ReadTheDocs Preview:** ${previewUrl}\n\n`;
+            
+            if (success) {
+              comment += `🎉 **All links are valid!**\n\n`;
+              comment += `The link checker found no broken links in your documentation.\n`;
+            } else {
+              comment += `⚠️ **Some links failed validation**\n\n`;
+              
+              if (output) {
+                // Truncate output if too long for GitHub comment
+                const maxLength = 30000;
+                let truncatedOutput = output;
+                if (output.length > maxLength) {
+                  truncatedOutput = output.substring(0, maxLength) + '\n\n... (output truncated, see full results in artifacts)';
+                }
+                
+                comment += `<details><summary>🔍 Click to view detailed results</summary>\n\n`;
+                comment += '```\n' + truncatedOutput + '\n```\n\n';
+                comment += `</details>\n\n`;
+              }
+              
+              comment += `📊 Full results are available in the [workflow artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).\n`;
+            }
+            
+            comment += `\n---\n`;
+            comment += `*Link check performed by [muffet](https://github.com/raviqqe/muffet) on commit ${{ github.sha }}*`;
+            
+            // Find existing comment to update or create new one
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const existingComment = comments.find(comment => 
+              comment.body.includes('Link Check Results')
+            );
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Fail workflow if links are broken
+        if: steps.link-check.outputs.exit_code != '0'
+        run: |
+          echo "❌ Link check failed with exit code ${{ steps.link-check.outputs.exit_code }}"
+          echo "Some links in the documentation are broken."
+          echo "Please check the detailed output above and fix the broken links."
+          exit 1

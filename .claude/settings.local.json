@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(wget:*)",
+      "Bash(tar:*)",
+      "Bash(./muffet --help)",
+      "Bash(curl:*)"
+    ],
+    "deny": []
+  }
+}

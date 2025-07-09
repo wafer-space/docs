@@ -35,18 +35,16 @@ This page provides a curated collection of resources for designing integrated ci
 
 ### Tutorials and Courses
 - [Zero to ASIC Course](https://zerotoasiccourse.com/) - Comprehensive course on ASIC design using open source tools
-- [OpenLane Workshop Materials](https://github.com/The-OpenROAD-Project/OpenLane-Workshop) - Hands-on workshop materials for learning OpenLane
+- [OpenLane Documentation](https://github.com/The-OpenROAD-Project/OpenLane) - Complete RTL to GDSII flow documentation and examples
 - [Analog IC Design Using Open Source Tools](https://github.com/chipforge/StdCellLib) - Resources for analog design with open PDKs
 
 ### Example Designs
-- [GF180MCU Open Source IP Catalog](https://github.com/efabless/globalfoundries-pdk-ip-gf180mcu) - Collection of open source IP blocks
 - [Caravel User Project Template](https://github.com/efabless/caravel_user_project) - Template for creating designs for fabrication
 - [OpenMPW Shuttle Projects](https://platform.efabless.com/projects/public) - Browse submitted open source chip designs
+- [GF180MCU Community Projects](https://github.com/google/gf180mcu-pdk) - Check issues and discussions for community designs
 
 ### Design Guides
-- [GF180MCU Design Rules Manual](https://gf180mcu-pdk.readthedocs.io/en/latest/physical_verification/design_rules.html) - Complete design rules documentation
-- [Analog Layout Best Practices](https://gf180mcu-pdk.readthedocs.io/en/latest/analog/layout.html) - Guidelines for analog circuit layout
-- [Digital Standard Cell Design Guide](https://gf180mcu-pdk.readthedocs.io/en/latest/digital/standard_cells.html) - Standard cell library documentation
+- [GF180MCU PDK Documentation](https://gf180mcu-pdk.readthedocs.io/) - Complete documentation including design rules, analog layout, and digital standard cells
 
 ## Community Projects and Tools
 
@@ -81,7 +79,7 @@ This page provides a curated collection of resources for designing integrated ci
 
 ### Testing and Characterization
 - [Semiconductor Test Basics](https://semiengineering.com/knowledge_centers/test/) - Overview of IC testing
-- [DIY IC Testing Setup Guide](https://hackaday.com/2021/07/19/integrated-circuit-decapping-the-easy-hard-way/) - Community resources for testing
+- [IC Testing Resources](https://www.vlsi-expert.com/) - General IC testing and characterization techniques
 
 ---
 
