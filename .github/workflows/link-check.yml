@@ -89,20 +89,16 @@ jobs:
           
           muffet \
             --verbose \
-            --color=never \
             --buffer-size=8192 \
             --max-connections=10 \
             --max-connections-per-host=2 \
             --rate-limit=10 \
             --timeout=30 \
-            --user-agent="Mozilla/5.0 (compatible; link-checker/1.0)" \
             --exclude=".*linkedin\.com.*" \
             --exclude=".*twitter\.com.*" \
             --exclude=".*x\.com.*" \
             --exclude=".*facebook\.com.*" \
             --exclude=".*discord\.gg.*" \
-            --header="Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \
-            --one-page-only=false \
             "$PREVIEW_URL" \
             > link-check-results/muffet-output.txt 2>&1
           
