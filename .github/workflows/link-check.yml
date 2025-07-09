@@ -5,6 +5,11 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   wait-for-readthedocs:
     name: Wait for ReadTheDocs Preview and Check Links
@@ -24,7 +29,7 @@ jobs:
         run: |
           PR_NUMBER="${{ steps.pr.outputs.number }}"
           PROJECT_SLUG="wafer-space"
-          PREVIEW_URL="https://wafer-space--${PR_NUMBER}.readthedocs.build/en/${PR_NUMBER}/"
+          PREVIEW_URL="https://wafer-space--${PR_NUMBER}.org.readthedocs.build/en/${PR_NUMBER}/"
           
           echo "Waiting for ReadTheDocs preview at: $PREVIEW_URL"
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT

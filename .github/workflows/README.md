@@ -24,7 +24,7 @@ This directory contains GitHub Actions workflows for automated testing and quali
 **ReadTheDocs URL Pattern:**
 The workflow constructs preview URLs using the pattern:
 ```
-https://wafer-space--{PR_NUMBER}.readthedocs.build/en/{PR_NUMBER}/
+https://wafer-space--{PR_NUMBER}.org.readthedocs.build/en/{PR_NUMBER}/
 ```
 
 **Artifacts:**
