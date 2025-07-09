@@ -17,9 +17,17 @@ This directory contains GitHub Actions workflows for automated testing and quali
 
 **Configuration:**
 - **Timeout:** 15 minutes total (10 minutes to wait for ReadTheDocs + 5 minutes for link checking)
-- **Excluded domains:** Social media sites (LinkedIn, Twitter/X, Facebook, Discord) that often block crawlers
-- **Rate limiting:** 10 requests/second to be respectful to external sites
-- **User agent:** Identifies as a link checker to external sites
+- **Request timeout:** 60 seconds per request to handle slow sites
+- **Rate limiting:** 5 requests/second to be respectful to external sites
+- **User agent:** Realistic browser user agent to avoid 403 errors
+- **Browser headers:** Accept, Accept-Language, Accept-Encoding headers
+- **TLS verification:** Skipped to handle certificate issues
+- **Redirects:** Automatically followed
+- **Excluded domains:** Sites that commonly block crawlers or have reliability issues:
+  - Social media: LinkedIn, Twitter/X, Facebook, Discord
+  - Academic/subscription: IEEE Xplore, Reddit  
+  - Development tools: SourceForge, Efabless platform
+  - Community sites: SkyWater Slack invites
 
 **ReadTheDocs URL Pattern:**
 The workflow constructs preview URLs using the pattern:

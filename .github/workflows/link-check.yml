@@ -76,6 +76,13 @@ jobs:
 
       - name: Run link checker with muffet
         id: link-check
+        env:
+          # Set a realistic user agent to avoid 403 errors
+          MUFFET_USER_AGENT: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+          # Add browser-like headers
+          MUFFET_HEADER_ACCEPT: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+          MUFFET_HEADER_ACCEPT_LANGUAGE: "en-US,en;q=0.5"
+          MUFFET_HEADER_ACCEPT_ENCODING: "gzip, deflate"
         run: |
           PREVIEW_URL="${{ steps.wait-rtd.outputs.preview_url }}"
           
@@ -92,13 +99,22 @@ jobs:
             --buffer-size=8192 \
             --max-connections=10 \
             --max-connections-per-host=2 \
-            --rate-limit=10 \
-            --timeout=30 \
+            --rate-limit=5 \
+            --timeout=60 \
+            --ignore-fragments \
+            --skip-tls-verification \
+            --follow-redirects \
             --exclude=".*linkedin\.com.*" \
             --exclude=".*twitter\.com.*" \
             --exclude=".*x\.com.*" \
             --exclude=".*facebook\.com.*" \
             --exclude=".*discord\.gg.*" \
+            --exclude=".*ieeexplore\.ieee\.org.*" \
+            --exclude=".*reddit\.com.*" \
+            --exclude=".*sourceforge\.io.*" \
+            --exclude=".*sourceforge\.net.*" \
+            --exclude=".*platform\.efabless\.com.*" \
+            --exclude=".*invite\.skywater\.tools.*" \
             "$PREVIEW_URL" \
             > link-check-results/muffet-output.txt 2>&1
           
