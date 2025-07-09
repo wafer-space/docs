@@ -94,7 +94,7 @@ jobs:
             --max-connections=10 \
             --max-connections-per-host=2 \
             --rate-limit=10 \
-            --timeout=30s \
+            --timeout=30 \
             --user-agent="Mozilla/5.0 (compatible; link-checker/1.0)" \
             --exclude=".*linkedin\.com.*" \
             --exclude=".*twitter\.com.*" \
