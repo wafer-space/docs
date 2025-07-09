@@ -76,3 +76,12 @@ make clean-venv
 - Once the work has been completed ask the user if you should merge the created branch into the main branch
 - Don't delete the branches after merging
 - When merging the branches to main, make sure to not fast forward
+
+## Automated Testing
+
+### Link Checking
+- All pull requests automatically trigger link checking via GitHub Actions
+- The workflow waits for ReadTheDocs preview deployment, then uses muffet to validate all links
+- Both internal navigation and external references are tested
+- PR comments show results and detailed reports are available as workflow artifacts
+- Broken links will fail the PR status checks and prevent merging
