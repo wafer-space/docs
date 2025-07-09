@@ -26,8 +26,9 @@ This directory contains GitHub Actions workflows for automated testing and quali
 - **Excluded domains:** Sites that commonly block crawlers or have reliability issues:
   - Social media: LinkedIn, Twitter/X, Facebook, Discord
   - Academic/subscription: IEEE Xplore, Reddit  
-  - Development tools: SourceForge, Efabless platform
+  - Development tools: SourceForge, Efabless platform, KLayout
   - Community sites: SkyWater Slack invites
+  - Corporate sites: GlobalFoundries, All About Circuits (block crawlers)
 
 **ReadTheDocs URL Pattern:**
 The workflow constructs preview URLs using the pattern:

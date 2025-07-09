@@ -5,7 +5,8 @@
       "Bash(gh run view:*)",
       "Bash(wget:*)",
       "Bash(tar:*)",
-      "Bash(./muffet --help)"
+      "Bash(./muffet --help)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }

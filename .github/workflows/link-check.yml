@@ -113,6 +113,9 @@ jobs:
             --exclude=".*sourceforge\.net.*" \
             --exclude=".*platform\.efabless\.com.*" \
             --exclude=".*invite\.skywater\.tools.*" \
+            --exclude=".*allaboutcircuits\.com.*" \
+            --exclude=".*globalfoundries\.com.*" \
+            --exclude=".*klayout\.de.*" \
             "$PREVIEW_URL" \
             > link-check-results/muffet-output.txt 2>&1
           
